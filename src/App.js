@@ -1,21 +1,18 @@
-import React, { Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
-import Event from "./pages/Events/Event";
-import Events from "./pages/Events/Events";
-import Home from "./pages/Home";
-import Notfound from "./pages/Notfound";
+import { StageCard } from "./Components/Cards/StageCard";
+import { useGetListByEndpointData } from "./Hooks/useGetListByEndpointData";
 
 function App() {
-  return (
-    <Suspense fallback={<>...Loading</>}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="events" element={<Events />} />
+  const { state: stages } = useGetListByEndpointData("stages");
 
-        <Route path="events/:id" element={<Event />} />
-        <Route path="*" element={<Notfound />} />
-      </Routes>
-    </Suspense>
+  return (
+    <ul>
+      {stages
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3)
+        .map((item) => (
+          <StageCard item={item} key={item.id} />
+        ))}
+    </ul>
   );
 }
 
